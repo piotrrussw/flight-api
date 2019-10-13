@@ -1,0 +1,22 @@
+{
+  "name": "flight-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "engines": {
+    "node": "10.*",
+    "npm": "6.5.*"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"   
+  },
+  "dependencies": {
+    "express": "*",
+    "passport": "*",
+    "nodemon": "*",
+    "passport-google-oauth20": "*"
+  },
+  "author": "",
+  "license": "ISC"
+}
