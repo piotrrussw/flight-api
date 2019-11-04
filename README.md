@@ -1,29 +1,29 @@
-#Flight Api
+# Flight Api
 App that allow user to search for flight, airport, destination and save it to favorites.
 
-##Documentation
+## Documentation
 
 See [DOCS](//).
 
-##Run
+## Run
 
 ```
 npm install
 npm start
 ```
 
-##Testing
+## Testing
 
 ```
 npm run test
 ```
 
-##Development
+## Development
 ```
 npm run dev
 ```
 
-##Technologies
+## Technologies
 
 * Node 10.x
 * Express.js
