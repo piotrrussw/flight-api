@@ -1,7 +1,7 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model } = require("mongoose");
 
 const flightSchema = new Schema({
-    id: String,
+  id: String
 });
 
-module.exports = model('flights', flightSchema);
+module.exports = model("flights", flightSchema);

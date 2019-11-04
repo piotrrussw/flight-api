@@ -1,21 +1,26 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const keys = require('./config/keys');
+const express = require("express");
+const mongoose = require("mongoose");
+const keys = require("./config/keys");
+const authRoutes = require("./routes/authRoutes");
+const accountRoutes = require("./routes/accountRoutes");
+const flightRoutes = require("./routes/flightRoutes");
+const PORT = process.env.PORT || 5000;
 
 // Import services
-require('./services/passport');
-
-// Connect to DB
-mongoose.connect(keys.mongoURI);
+// require("./services/passport");
 
 // Init express Server
 const app = express();
 
-// Import routes
-require('./routes/authRoutes')(app);
-require('./routes/accountRoutes')(app);
-require('./routes/flightRoutes')(app);
+// Set routes
+app.use(authRoutes);
+app.use(accountRoutes);
+app.use(flightRoutes);
 
-// Start express server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT);
+// Connect to DB
+const db = mongoose.connect(keys.mongoURI);
+
+db.then(() => {
+  // Start express server
+  app.listen(PORT);
+}).catch(console.error);

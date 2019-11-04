@@ -1,16 +1,10 @@
-const passport = require('passport');
+const express = require("express");
+const authController = require("../controllers/authController");
 
-module.exports = (app) => {
-    app.get(
-        '/auth/google',
-        passport.authenticate('google', {
-            scope: ['profile', 'email']
-        })
-    );
-    
-    app.get('/auth/google/callback', passport.authenticate('google'));
+const router = express.Router();
 
-    app.post('/logout', (req, res) => {
-        // 1) logout User with given accesToken
-    });
-}
+router.get("/auth/", authController.authenticate);
+
+router.post("/logout", authController.logout);
+
+module.exports = router;

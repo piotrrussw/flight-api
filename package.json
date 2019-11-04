@@ -1,22 +1,28 @@
 {
   "name": "flight-app",
   "version": "1.0.0",
-  "description": "",
+  "description": "App that allow user to search for flight, airport, destination and save it to favorites",
   "main": "index.js",
   "engines": {
     "node": "10.*",
     "npm": "6.5.*"
   },
   "scripts": {
+    "test": "mocha",
     "start": "node index.js",
-    "dev": "nodemon index.js"   
+    "dev": "nodemon index.js",
+    "generate-doc": "jsdoc controllers middleware models routes services index.js -r"
   },
+  "author": "Piotr Wadycki <piotrwadycki@gmail.com>",
+  "license": "ISC",
   "dependencies": {
-    "express": "*",
-    "passport": "*",
-    "nodemon": "*",
-    "passport-google-oauth20": "*"
+    "express": "^4.17.1",
+    "got": "^9.6.0",
+    "mongoose": "^5.7.5"
   },
-  "author": "",
-  "license": "ISC"
+  "devDependencies": {
+    "nodemon": "^1.19.4",
+    "chai": "^4.2.0",
+    "mocha": "^6.2.2"
+  }
 }
