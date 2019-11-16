@@ -3,7 +3,7 @@ App that allow user to search for flight, airport, destination and save it to fa
 
 ## Documentation
 
-See [DOCS](//).
+See [DOCS](https://piotrrussw.github.io/flight-api/docs/).
 
 ## Run
 
