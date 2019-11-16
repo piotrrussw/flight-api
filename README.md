@@ -1,9 +1,14 @@
 # Flight Api
 App that allow user to search for flight, airport, destination and save it to favorites.
+Developed for my University Internet Engineering class.
+
+## Repository 
+
+[REPO](https://github.com/piotrrussw/flight-api)
 
 ## Documentation
 
-See [DOCS](https://piotrrussw.github.io/flight-api/docs/).
+[DOCS](https://piotrrussw.github.io/flight-api/docs/).
 
 ## Run
 
@@ -21,6 +26,14 @@ npm run test
 ## Development
 ```
 npm run dev
+```
+
+## Generate Docs
+
+Using [JSDOC](https://jsdoc.app/)
+
+```
+npm run generate-doc
 ```
 
 ## Technologies
