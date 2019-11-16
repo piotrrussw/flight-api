@@ -3,8 +3,16 @@ const Flight = require("../models/Flight");
 const Airport = require("../models/Airport");
 const Destination = require("../models/Destination");
 
-exports.delete = (req, res) => {
-  const { token } = req;
+/**
+ * @function delete
+ * Delete user from DB
+ * @param {Object} req - request data
+ * @param {Object} res - response Object to return
+ * @returns {Promise<*|void>}
+ */
+exports.delete = async (req, res) => {
+  const { session } = req;
+  const token = session ? session.accessToken : null;
   const user = await User.findOne({ "tokens.token": token });
 
   if (!user) {
@@ -14,12 +22,20 @@ exports.delete = (req, res) => {
   }
 
   user.delete();
-  
+
   return res.status(200).send({ message: 'Success' });
 };
 
-exports.show = (req, res) => {
-  const { token } = req;
+/**
+ * @function show
+ * Show User information
+ * @param {Object} req - request data
+ * @param {Object} res - response Object to return
+ * @returns {Promise<*|void>}
+ */
+exports.show = async (req, res) => {
+  const { session } = req;
+  const token = session ? session.accessToken : null;
   const user = await User.findOne({ "tokens.token": token });
 
   if (!user) {
@@ -31,8 +47,16 @@ exports.show = (req, res) => {
   return res.status(200).send({ user, message: 'Success' });
 };
 
-exports.getUserFlights = (req, res) => {
-  const { token } = req;
+/**
+ * @function getUserFlights
+ * Returns User saved flights
+ * @param {Object} req - request data
+ * @param {Object} res - response Object to return
+ * @returns {Promise<*|void>}
+ */
+exports.getUserFlights = async (req, res) => {
+  const { session } = req;
+  const token = session ? session.accessToken : null;
   const user = await User.findOne({ "tokens.token": token });
 
   if (!user) {
@@ -52,8 +76,16 @@ exports.getUserFlights = (req, res) => {
   return res.status(200).send({ flights, message: "Success" });
 };
 
-exports.getUserDestinations = (req, res) => {
-  const { token } = req;
+/**
+ * @function getUserDestinations
+ * Returns User save destinations
+ * @param {Object} req - request data
+ * @param {Object} res - response Object to return
+ * @returns {Promise<*|void>}
+ */
+exports.getUserDestinations = async (req, res) => {
+  const { session } = req;
+  const token = session ? session.accessToken : null;
   const user = await User.findOne({ "tokens.token": token });
 
   if (!user) {
@@ -73,8 +105,16 @@ exports.getUserDestinations = (req, res) => {
   return res.status(200).send({ destinations, message: "Success" });
 };
 
-exports.getUserAirports = (req, res) => {
-  const { token } = req;
+/**
+ * @function getUserAirports
+ * Returns User saved airports
+ * @param {Object} req - request data
+ * @param {Object} res - response Object to return
+ * @returns {Promise<*|void>}
+ */
+exports.getUserAirports = async (req, res) => {
+  const { session } = req;
+  const token = session ? session.accessToken : null;
   const user = await User.findOne({ "tokens.token": token });
 
   if (!user) {
@@ -94,8 +134,16 @@ exports.getUserAirports = (req, res) => {
   return res.status(200).send({ airports, message: "Success" });
 };
 
-exports.getUserFlight = (req, res) => {
-  const { token } = req;
+/**
+ * @function getUserFlight
+ * Returns User saved flight with given id
+ * @param {Object} req - request data
+ * @param {Object} res - response Object to return
+ * @returns {Promise<*|void>}
+ */
+exports.getUserFlight = async (req, res) => {
+  const { session } = req;
+  const token = session ? session.accessToken : null;
   const { id } = req.params;
   const user = await User.findOne({ "tokens.token": token });
 
@@ -116,8 +164,16 @@ exports.getUserFlight = (req, res) => {
   return res.status(200).send({ flight, message: "Success" });
 };
 
-exports.getUserDestination = (req, res) => {
-  const { token } = req;
+/**
+ * @function getUserDestination
+ * Returns User saved destination with given id
+ * @param {Object} req - request data
+ * @param {Object} res - response Object to return
+ * @returns {Promise<*|void>}
+ */
+exports.getUserDestination = async (req, res) => {
+  const { session } = req;
+  const token = session ? session.accessToken : null;
   const { id } = req.params;
   const user = await User.findOne({ "tokens.token": token });
 
@@ -138,8 +194,16 @@ exports.getUserDestination = (req, res) => {
   return res.status(200).send({ destination, message: "Success" });
 };
 
-exports.getUserAirport = (req, res) => {
-  const { token } = req;
+/**
+ * @function getUserAirport
+ * Returns User save airport with given id
+ * @param {Object} req - request data
+ * @param {Object} res - response Object to return
+ * @returns {Promise<*|void>}
+ */
+exports.getUserAirport = async (req, res) => {
+  const { session } = req;
+  const token = session ? session.accessToken : null;
   const { id } = req.params;
   const user = await User.findOne({ "tokens.token": token });
 
@@ -160,8 +224,16 @@ exports.getUserAirport = (req, res) => {
   return res.status(200).send({ airport, message: "Success" });
 };
 
-exports.deleteUserFlight = (req, res) => {
-  const { token } = req;
+/**
+ * @function deleteUserFlight
+ * Deletes User saved flight with given id
+ * @param {Object} req - request data
+ * @param {Object} res - response Object to return
+ * @returns {Promise<*|void>}
+ */
+exports.deleteUserFlight = async (req, res) => {
+  const { session } = req;
+  const token = session ? session.accessToken : null;
   const { id } = req.params;
   const user = await User.findOne({ "tokens.token": token });
 
@@ -184,8 +256,16 @@ exports.deleteUserFlight = (req, res) => {
   return res.status(200).send({ message: "Success" });
 };
 
-exports.deleteUserDestination = (req, res) => {
-  const { token } = req;
+/**
+ * @function deleteUserDestination
+ * Deletes User saved destination with given id
+ * @param {Object} req - request data
+ * @param {Object} res - response Object to return
+ * @returns {Promise<*|void>}
+ */
+exports.deleteUserDestination = async (req, res) => {
+  const { session } = req;
+  const token = session ? session.accessToken : null;
   const { id } = req.params;
   const user = await User.findOne({ "tokens.token": token });
 
@@ -208,8 +288,16 @@ exports.deleteUserDestination = (req, res) => {
   return res.status(200).send({ message: "Success" });
 };
 
-exports.deleteUserAirport = (req, res) => {
-  const { token } = req;
+/**
+ * @function deleteUserAirport
+ * Deletes User saved airport with given id
+ * @param {Object} req - request data
+ * @param {Object} res - response Object to return
+ * @returns {Promise<*|void>}
+ */
+exports.deleteUserAirport = async (req, res) => {
+  const { session } = req;
+  const token = session ? session.accessToken : null;
   const { id } = req.params;
   const user = await User.findOne({ "tokens.token": token });
 
@@ -219,7 +307,7 @@ exports.deleteUserAirport = (req, res) => {
         .send({ error: "Could not find user." });
   }
 
-  const airport = await airport.findOne({ id, userId: user.id });
+  const airport = await Airport.findOne({ id, userId: user.id });
 
   if (!airport) {
     return res

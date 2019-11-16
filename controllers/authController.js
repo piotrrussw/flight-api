@@ -1,9 +1,10 @@
 const User = require("../models/User");
 
 /**
- * @function signUp - sign up User
- * @param req
- * @param res
+ * @function signUp
+ * Sign up User
+ * @param {Object} req - request data
+ * @param {Object} res - response Object to return
  */
 exports.signUp = async (req, res) => {
   try {
@@ -17,9 +18,10 @@ exports.signUp = async (req, res) => {
 };
 
 /**
- * @function signIn - sign in User
- * @param req
- * @param res
+ * @function signIn
+ * Sign in User
+ * @param {Object} req - request data
+ * @param {Object} res - response Object to return
  */
 exports.signIn = async (req, res) => {
   try {
@@ -40,7 +42,11 @@ exports.signIn = async (req, res) => {
 };
 
 /**
+ * @function logout
  * Logout User
+ * @param {Object} req - request data
+ * @param {Object} res - response Object to return
+ * @returns {Promise<*|void>}
  */
 exports.logout = async (req, res) => {
     const { token } = req;
