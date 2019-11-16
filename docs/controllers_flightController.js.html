@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: controllers/flightController.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: controllers/flightController.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const FlightApi = require("../services/flightApi");
+const Flight = require("../models/Flight");
+const Destination = require("../models/Destination");
+const Airport = require("../models/Airport");
+const User = require("../models/User");
+const api = new FlightApi();
+
+/**
+ * @function getAirports
+ * @description Returns all airports for given city
+ * @param {Object} req - request data
+ * @param {Object} res - response Object to return
+ * @returns {Promise&lt;*|void>}
+ */
+exports.getAirports = async (req, res) => {
+  const { query } = req;
+
+  if (!query.city) {
+    return res.status(400).send({ message: "Bad params." });
+  }
+
+  const { statusCode, body } = await api.req("autosuggest/v1.0/UK/GBP/en-GB/", {
+    query: query.city
+  });
+
+  return res.status(statusCode).send(body);
+};
+
+/**
+ * @function getDestinations
+ * @description Returns all available cities for destination
+ * @param {Object} req - request data
+ * @param {Object} res - response Object to return
+ * @returns {Promise&lt;*>}
+ */
+exports.getDestinations = async (req, res) => {
+  const { statusCode, body } = await api.req("reference/v1.0/countries/en-GB/");
+
+  return res.status(statusCode).send(body);
+};
+
+/**
+ * @function getFlight
+ * @description Returns all available flights for given date
+ * @param {Object} req - request data
+ * @param {Object} res- response Object to return
+ */
+exports.getFlights = async (req, res) => {
+  const { query } = req;
+
+  const { statusCode, body } = await api.req(
+    "browsequotes/v1.0/PL/PLN/en-GB",
+    query
+  );
+
+  return res.status(statusCode).send(body);
+};
+
+/**
+ * @function saveFlight
+ * @description Save Flight for logged in User
+ * @param {Object} req - request data
+ * @param {Object} res - response Object to return
+ * @returns {*|void}
+ */
+exports.saveFlight = async (req, res) => {
+  const { body, session } = req;
+  const accessToken = session ? session.accessToken : null;
+
+  if (!accessToken) {
+    return res.status(405).send({ message: "User not logged in" });
+  }
+
+  const user = await User.findOne({ "tokens.token": accessToken });
+
+  if (!user) {
+    return res.status(401).send({ error: "Could not logout user." });
+  }
+
+  const flight = new Flight({ userId: user.id, ...body });
+
+  await flight.save();
+
+  return res.status(200).send({ message: "Success" });
+};
+
+/**
+ * @function saveDestination
+ * @description Save Destination for logged in User
+ * @param {Object} req - request data
+ * @param {Object} res - response Object to return
+ * @returns {*|void}
+ */
+exports.saveDestination = async (req, res) => {
+  const { body, session } = req;
+  const accessToken = session ? session.accessToken : null;
+
+  if (!accessToken) {
+    return res.status(405).send({ message: "User not logged in" });
+  }
+
+  const user = await User.findOne({ "tokens.token": accessToken });
+
+  if (!user) {
+    return res.status(401).send({ error: "Could not logout user." });
+  }
+
+  const destination = new Destination({ userId: user.id, ...body });
+
+  await destination.save();
+
+  return res.status(200).send({ message: "Success" });
+};
+
+/**
+ * @function saveAirport
+ * @description Save Airport for logged in User
+ * @param {Object} req - request data
+ * @param {Object} res - response Object to return
+ * @returns {*|void}
+ */
+exports.saveAirport = async (req, res) => {
+  const { body, session } = req;
+  const accessToken = session ? session.accessToken : null;
+
+  if (!accessToken) {
+    return res.status(405).send({ message: "User not logged in" });
+  }
+
+  const user = await User.findOne({ "tokens.token": accessToken });
+
+  if (!user) {
+    return res.status(401).send({ error: "Could not logout user." });
+  }
+
+  const airport = new Airport({ userId: user.id, ...body });
+
+  await airport.save();
+
+  return res.status(200).send({ message: "Success" });
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="FlightApi.html">FlightApi</a></li></ul><h3>Global</h3><ul><li><a href="global.html#authMiddleware">authMiddleware</a></li><li><a href="global.html#delete">delete</a></li><li><a href="global.html#deleteUserAirport">deleteUserAirport</a></li><li><a href="global.html#deleteUserDestination">deleteUserDestination</a></li><li><a href="global.html#deleteUserFlight">deleteUserFlight</a></li><li><a href="global.html#getAirports">getAirports</a></li><li><a href="global.html#getDestinations">getDestinations</a></li><li><a href="global.html#getFlight">getFlight</a></li><li><a href="global.html#getUserAirport">getUserAirport</a></li><li><a href="global.html#getUserAirports">getUserAirports</a></li><li><a href="global.html#getUserDestination">getUserDestination</a></li><li><a href="global.html#getUserDestinations">getUserDestinations</a></li><li><a href="global.html#getUserFlight">getUserFlight</a></li><li><a href="global.html#getUserFlights">getUserFlights</a></li><li><a href="global.html#logout">logout</a></li><li><a href="global.html#saveAirport">saveAirport</a></li><li><a href="global.html#saveDestination">saveDestination</a></li><li><a href="global.html#saveFlight">saveFlight</a></li><li><a href="global.html#show">show</a></li><li><a href="global.html#signIn">signIn</a></li><li><a href="global.html#signUp">signUp</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sat Nov 16 2019 15:32:43 GMT+0100 (GMT+01:00)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

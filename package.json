@@ -11,7 +11,7 @@
     "test": "mocha",
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "generate-doc": "jsdoc controllers middleware models routes services index.js -r"
+    "generate-doc": "jsdoc controllers middleware models routes services index.js -r -d docs"
   },
   "author": "Piotr Wadycki <piotrwadycki@gmail.com>",
   "license": "ISC",
