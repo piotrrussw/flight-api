@@ -1,7 +1,11 @@
 const { Schema, model } = require("mongoose");
 
 const flightSchema = new Schema({
-  id: String
+  userId: {
+    type: String,
+    required: true,
+    trim: true
+}
 });
 
 module.exports = model("flights", flightSchema);

@@ -1,15 +1,32 @@
 const User = require("../models/User");
 
-exports.delete = (req, res, next) => {
+exports.delete = (req, res) => {
   // 1) Get User ID from accessToken
-  // 2) Delete User from User model
-  // 3) Delete all connected flights from Flight model
-  // 4) Return operation result
+  const { token } = req;
+  const user = await User.findOne({ "tokens.token": token });
+
+  if (!user) {
+    return res
+        .status(401)
+        .send({ error: "Could not find user." });
+  }
+
+  user.delete();
+  
+  return res.status(200).send({ message: 'Success' });
 };
 
-exports.show = (req, res, next) => {
-  // 1) Get user information from User model
-  // 2) Return operation status and data
+exports.show = (req, res) => {
+  const { token } = req;
+  const user = await User.findOne({ "tokens.token": token });
+
+  if (!user) {
+    return res
+        .status(401)
+        .send({ error: "Could not find user." });
+  }
+
+  return res.status(200).send({ message: 'Success' });
 };
 
 exports.getUserFlights = (req, res) => {

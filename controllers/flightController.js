@@ -1,5 +1,7 @@
 const FlightApi = require("../services/flightApi");
 const Flight = require("../models/Flight");
+const Flight = require("../models/Destination");
+const Flight = require("../models/Airport");
 const User = require("../models/User");
 const api = new FlightApi();
 
@@ -59,27 +61,69 @@ exports.getFlights = async (req, res) => {
 
 exports.saveFlight = (req, res) => {
   const { body, session } = req;
+  const accessToken = session ? session.accessToken : null;
 
-  if (session && session.accessToken) {
-
+  if (!accessToken) {
+    return res.status(405).send({ message: "User not logged in"}); 
   }
 
-  return res.status(405).send({ message: "User not logged in"});
-  // 1) Validate req data
-  // 2) Get User ID from accessToken
-  // 3) Save flight to Flight model
-  // 4) Return operation result
+  const user = await User.findOne({ "tokens.token": token });
+
+  if (!user) {
+      return res
+          .status(401)
+          .send({ error: "Could not logout user." });
+  }
+
+  const flight = new Flight({ userId: user.id, ...body });
+
+  await flight.save();
+
+  return res.status(200).send({ message: "Success" });
 };
 
 exports.saveDestination = (req, res) => {
-  // 1) Validate req data
-  // 2) Get User ID from accessToken
-  // 3) Check If User has flight with given ID
-  // 4) If doesn't throw Error
-  // 3) Delete flight from Flight model
-  // 4) Return operation result
+  const { body, session } = req;
+  const accessToken = session ? session.accessToken : null;
+
+  if (!accessToken) {
+    return res.status(405).send({ message: "User not logged in"}); 
+  }
+
+  const user = await User.findOne({ "tokens.token": token });
+
+  if (!user) {
+      return res
+          .status(401)
+          .send({ error: "Could not logout user." });
+  }
+
+  const destination = new Destination({ userId: user.id, ...body });
+
+  await destination.save();
+
+  return res.status(200).send({ message: "Success" });
 };
 
 exports.saveAirport = (req, res) => {
+  const { body, session } = req;
+  const accessToken = session ? session.accessToken : null;
 
+  if (!accessToken) {
+    return res.status(405).send({ message: "User not logged in"}); 
+  }
+
+  const user = await User.findOne({ "tokens.token": token });
+
+  if (!user) {
+      return res
+          .status(401)
+          .send({ error: "Could not logout user." });
+  }
+
+  const airport = new Airport({ userId: user.id, ...body });
+
+  await airport.save();
+
+  return res.status(200).send({ message: "Success" });
 };
