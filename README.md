@@ -8,7 +8,7 @@ Developed for my University Internet Engineering class.
 
 ## Documentation
 
-[DOCS](https://piotrrussw.github.io/flight-api/docs/).
+[DOCS](https://piotrrussw.github.io/flight-api/).
 
 ## Run
 
