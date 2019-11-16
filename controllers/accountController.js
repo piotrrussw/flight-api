@@ -5,7 +5,7 @@ const Destination = require("../models/Destination");
 
 /**
  * @function delete
- * Delete user from DB
+ * @description Delete user from DB
  * @param {Object} req - request data
  * @param {Object} res - response Object to return
  * @returns {Promise<*|void>}
@@ -28,7 +28,7 @@ exports.delete = async (req, res) => {
 
 /**
  * @function show
- * Show User information
+ * @description Show User information
  * @param {Object} req - request data
  * @param {Object} res - response Object to return
  * @returns {Promise<*|void>}
@@ -49,7 +49,7 @@ exports.show = async (req, res) => {
 
 /**
  * @function getUserFlights
- * Returns User saved flights
+ * @description Returns User saved flights
  * @param {Object} req - request data
  * @param {Object} res - response Object to return
  * @returns {Promise<*|void>}
@@ -78,7 +78,7 @@ exports.getUserFlights = async (req, res) => {
 
 /**
  * @function getUserDestinations
- * Returns User save destinations
+ * @description Returns User save destinations
  * @param {Object} req - request data
  * @param {Object} res - response Object to return
  * @returns {Promise<*|void>}
@@ -107,7 +107,7 @@ exports.getUserDestinations = async (req, res) => {
 
 /**
  * @function getUserAirports
- * Returns User saved airports
+ * @description Returns User saved airports
  * @param {Object} req - request data
  * @param {Object} res - response Object to return
  * @returns {Promise<*|void>}
@@ -136,7 +136,7 @@ exports.getUserAirports = async (req, res) => {
 
 /**
  * @function getUserFlight
- * Returns User saved flight with given id
+ * @description Returns User saved flight with given id
  * @param {Object} req - request data
  * @param {Object} res - response Object to return
  * @returns {Promise<*|void>}
@@ -166,7 +166,7 @@ exports.getUserFlight = async (req, res) => {
 
 /**
  * @function getUserDestination
- * Returns User saved destination with given id
+ * @description Returns User saved destination with given id
  * @param {Object} req - request data
  * @param {Object} res - response Object to return
  * @returns {Promise<*|void>}
@@ -196,7 +196,7 @@ exports.getUserDestination = async (req, res) => {
 
 /**
  * @function getUserAirport
- * Returns User save airport with given id
+ * @description Returns User save airport with given id
  * @param {Object} req - request data
  * @param {Object} res - response Object to return
  * @returns {Promise<*|void>}
@@ -226,7 +226,7 @@ exports.getUserAirport = async (req, res) => {
 
 /**
  * @function deleteUserFlight
- * Deletes User saved flight with given id
+ * @description Deletes User saved flight with given id
  * @param {Object} req - request data
  * @param {Object} res - response Object to return
  * @returns {Promise<*|void>}
@@ -258,7 +258,7 @@ exports.deleteUserFlight = async (req, res) => {
 
 /**
  * @function deleteUserDestination
- * Deletes User saved destination with given id
+ * @description Deletes User saved destination with given id
  * @param {Object} req - request data
  * @param {Object} res - response Object to return
  * @returns {Promise<*|void>}
@@ -290,7 +290,7 @@ exports.deleteUserDestination = async (req, res) => {
 
 /**
  * @function deleteUserAirport
- * Deletes User saved airport with given id
+ * @description Deletes User saved airport with given id
  * @param {Object} req - request data
  * @param {Object} res - response Object to return
  * @returns {Promise<*|void>}

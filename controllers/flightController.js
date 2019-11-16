@@ -7,7 +7,7 @@ const api = new FlightApi();
 
 /**
  * @function getAirports
- * Returns all airports for given city
+ * @description Returns all airports for given city
  * @param {Object} req - request data
  * @param {Object} res - response Object to return
  * @returns {Promise<*|void>}
@@ -28,7 +28,7 @@ exports.getAirports = async (req, res) => {
 
 /**
  * @function getDestinations
- * Returns all available cities for destination
+ * @description Returns all available cities for destination
  * @param {Object} req - request data
  * @param {Object} res - response Object to return
  * @returns {Promise<*>}
@@ -41,7 +41,7 @@ exports.getDestinations = async (req, res) => {
 
 /**
  * @function getFlight
- * Returns all available flights for given date
+ * @description Returns all available flights for given date
  * @param {Object} req - request data
  * @param {Object} res- response Object to return
  */
@@ -58,7 +58,7 @@ exports.getFlights = async (req, res) => {
 
 /**
  * @function saveFlight
- * Save Flight for logged in User
+ * @description Save Flight for logged in User
  * @param {Object} req - request data
  * @param {Object} res - response Object to return
  * @returns {*|void}
@@ -86,7 +86,7 @@ exports.saveFlight = async (req, res) => {
 
 /**
  * @function saveDestination
- * Save Destination for logged in User
+ * @description Save Destination for logged in User
  * @param {Object} req - request data
  * @param {Object} res - response Object to return
  * @returns {*|void}
@@ -114,7 +114,7 @@ exports.saveDestination = async (req, res) => {
 
 /**
  * @function saveAirport
- * Save Airport for logged in User
+ * @description Save Airport for logged in User
  * @param {Object} req - request data
  * @param {Object} res - response Object to return
  * @returns {*|void}
