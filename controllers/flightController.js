@@ -4,6 +4,7 @@ const Destination = require("../models/Destination");
 const Airport = require("../models/Airport");
 const User = require("../models/User");
 const api = new FlightApi();
+const { check } = require("express-validator");
 
 /**
  * @function getAirports
@@ -14,7 +15,6 @@ const api = new FlightApi();
  */
 exports.getAirports = async (req, res) => {
   const { query } = req;
-
   if (!query.city) {
     return res.status(400).send({ message: "Bad params." });
   }
@@ -46,11 +46,9 @@ exports.getDestinations = async (req, res) => {
  * @param {Object} res- response Object to return
  */
 exports.getFlights = async (req, res) => {
-  const { query } = req;
-
+  const { query } = req.query;
   const { statusCode, body } = await api.req(
-    "browsequotes/v1.0/PL/PLN/en-GB",
-    query
+    "browsequotes/v1.0/PL/PLN/en-GB/" + query
   );
 
   return res.status(statusCode).send(body);
@@ -65,13 +63,13 @@ exports.getFlights = async (req, res) => {
  */
 exports.saveFlight = async (req, res) => {
   const { body, session } = req;
-  const accessToken = session ? session.accessToken : null;
+  const token = session ? session.accessToken : null;
 
-  if (!accessToken) {
+  if (!token) {
     return res.status(405).send({ message: "User not logged in" });
   }
 
-  const user = await User.findOne({ "tokens.token": accessToken });
+  const user = await User.findOne({ "tokens.token": token });
 
   if (!user) {
     return res.status(401).send({ error: "Could not logout user." });
@@ -93,13 +91,13 @@ exports.saveFlight = async (req, res) => {
  */
 exports.saveDestination = async (req, res) => {
   const { body, session } = req;
-  const accessToken = session ? session.accessToken : null;
+  const token = session ? session.token : null;
 
-  if (!accessToken) {
+  if (!token) {
     return res.status(405).send({ message: "User not logged in" });
   }
 
-  const user = await User.findOne({ "tokens.token": accessToken });
+  const user = await User.findOne({ "tokens.token": token });
 
   if (!user) {
     return res.status(401).send({ error: "Could not logout user." });
@@ -121,13 +119,13 @@ exports.saveDestination = async (req, res) => {
  */
 exports.saveAirport = async (req, res) => {
   const { body, session } = req;
-  const accessToken = session ? session.accessToken : null;
+  const token = session ? session.accessToken : null;
 
-  if (!accessToken) {
+  if (!token) {
     return res.status(405).send({ message: "User not logged in" });
   }
 
-  const user = await User.findOne({ "tokens.token": accessToken });
+  const user = await User.findOne({ "tokens.token": token });
 
   if (!user) {
     return res.status(401).send({ error: "Could not logout user." });
@@ -138,4 +136,18 @@ exports.saveAirport = async (req, res) => {
   await airport.save();
 
   return res.status(200).send({ message: "Success" });
+};
+
+exports.validate = method => {
+  switch (method) {
+    case "saveFlight":
+      return [
+        check("quotes").optional(),
+        check("places").optional(),
+        check("carriers").optional(),
+        check("currencies").optional()
+      ];
+    default:
+      return [];
+  }
 };

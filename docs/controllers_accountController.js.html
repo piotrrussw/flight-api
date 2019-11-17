@@ -29,7 +29,6 @@
             <pre class="prettyprint source linenums"><code>const User = require("../models/User");
 const Flight = require("../models/Flight");
 const Airport = require("../models/Airport");
-const Destination = require("../models/Destination");
 
 /**
  * @function delete
@@ -44,14 +43,12 @@ exports.delete = async (req, res) => {
   const user = await User.findOne({ "tokens.token": token });
 
   if (!user) {
-    return res
-        .status(401)
-        .send({ error: "Could not find user." });
+    return res.status(401).send({ error: "Could not find user." });
   }
 
-  user.delete();
+  await user.delete();
 
-  return res.status(200).send({ message: 'Success' });
+  return res.status(200).send({ message: "Success" });
 };
 
 /**
@@ -67,12 +64,10 @@ exports.show = async (req, res) => {
   const user = await User.findOne({ "tokens.token": token });
 
   if (!user) {
-    return res
-        .status(401)
-        .send({ error: "Could not find user." });
+    return res.status(401).send({ error: "Could not find user." });
   }
 
-  return res.status(200).send({ user, message: 'Success' });
+  return res.status(200).send({ user, message: "Success" });
 };
 
 /**
@@ -88,49 +83,16 @@ exports.getUserFlights = async (req, res) => {
   const user = await User.findOne({ "tokens.token": token });
 
   if (!user) {
-    return res
-        .status(401)
-        .send({ error: "Could not find user." });
+    return res.status(401).send({ error: "Could not find user." });
   }
 
   const flights = await Flight.find({ userId: user.id });
 
   if (!flights) {
-    return res
-        .status(401)
-        .send({ error: "Could not find flights." });
+    return res.status(401).send({ error: "Could not find flights." });
   }
 
   return res.status(200).send({ flights, message: "Success" });
-};
-
-/**
- * @function getUserDestinations
- * @description Returns User save destinations
- * @param {Object} req - request data
- * @param {Object} res - response Object to return
- * @returns {Promise&lt;*|void>}
- */
-exports.getUserDestinations = async (req, res) => {
-  const { session } = req;
-  const token = session ? session.accessToken : null;
-  const user = await User.findOne({ "tokens.token": token });
-
-  if (!user) {
-    return res
-        .status(401)
-        .send({ error: "Could not find user." });
-  }
-
-  const destinations = await Destination.find({ userId: user.id });
-
-  if (!destinations) {
-    return res
-        .status(401)
-        .send({ error: "Could not find destinations." });
-  }
-
-  return res.status(200).send({ destinations, message: "Success" });
 };
 
 /**
@@ -146,17 +108,13 @@ exports.getUserAirports = async (req, res) => {
   const user = await User.findOne({ "tokens.token": token });
 
   if (!user) {
-    return res
-        .status(401)
-        .send({ error: "Could not find user." });
+    return res.status(401).send({ error: "Could not find user." });
   }
 
   const airports = await Airport.find({ userId: user.id });
 
   if (!airports) {
-    return res
-        .status(401)
-        .send({ error: "Could not find airports." });
+    return res.status(401).send({ error: "Could not find airports." });
   }
 
   return res.status(200).send({ airports, message: "Success" });
@@ -176,50 +134,16 @@ exports.getUserFlight = async (req, res) => {
   const user = await User.findOne({ "tokens.token": token });
 
   if (!user) {
-    return res
-        .status(401)
-        .send({ error: "Could not find user." });
+    return res.status(401).send({ error: "Could not find user." });
   }
 
-  const flight = await Flight.findOne({ id, userId: user.id });
+  const flight = await Flight.findOne({ _id: id, userId: user.id });
 
   if (!flight) {
-    return res
-        .status(401)
-        .send({ error: "Could not find flight." });
+    return res.status(401).send({ error: "Could not find flight." });
   }
 
   return res.status(200).send({ flight, message: "Success" });
-};
-
-/**
- * @function getUserDestination
- * @description Returns User saved destination with given id
- * @param {Object} req - request data
- * @param {Object} res - response Object to return
- * @returns {Promise&lt;*|void>}
- */
-exports.getUserDestination = async (req, res) => {
-  const { session } = req;
-  const token = session ? session.accessToken : null;
-  const { id } = req.params;
-  const user = await User.findOne({ "tokens.token": token });
-
-  if (!user) {
-    return res
-        .status(401)
-        .send({ error: "Could not find user." });
-  }
-
-  const destination = await Destination.findOne({ id, userId: user.id });
-
-  if (!destination) {
-    return res
-        .status(401)
-        .send({ error: "Could not find destination." });
-  }
-
-  return res.status(200).send({ destination, message: "Success" });
 };
 
 /**
@@ -236,17 +160,13 @@ exports.getUserAirport = async (req, res) => {
   const user = await User.findOne({ "tokens.token": token });
 
   if (!user) {
-    return res
-        .status(401)
-        .send({ error: "Could not find user." });
+    return res.status(401).send({ error: "Could not find user." });
   }
 
-  const airport = await Airport.findOne({ id, userId: user.id });
+  const airport = await Airport.findOne({ _id: id, userId: user.id });
 
   if (!airport) {
-    return res
-        .status(401)
-        .send({ error: "Could not find airport." });
+    return res.status(401).send({ error: "Could not find airport." });
   }
 
   return res.status(200).send({ airport, message: "Success" });
@@ -266,52 +186,16 @@ exports.deleteUserFlight = async (req, res) => {
   const user = await User.findOne({ "tokens.token": token });
 
   if (!user) {
-    return res
-        .status(401)
-        .send({ error: "Could not find user." });
+    return res.status(401).send({ error: "Could not find user." });
   }
 
   const flight = await Flight.findOne({ id, userId: user.id });
 
   if (!flight) {
-    return res
-        .status(401)
-        .send({ error: "Could not find flight." });
+    return res.status(401).send({ error: "Could not find flight." });
   }
 
   await flight.delete();
-
-  return res.status(200).send({ message: "Success" });
-};
-
-/**
- * @function deleteUserDestination
- * @description Deletes User saved destination with given id
- * @param {Object} req - request data
- * @param {Object} res - response Object to return
- * @returns {Promise&lt;*|void>}
- */
-exports.deleteUserDestination = async (req, res) => {
-  const { session } = req;
-  const token = session ? session.accessToken : null;
-  const { id } = req.params;
-  const user = await User.findOne({ "tokens.token": token });
-
-  if (!user) {
-    return res
-        .status(401)
-        .send({ error: "Could not find user." });
-  }
-
-  const destination = await Destination.findOne({ id, userId: user.id });
-
-  if (!destination) {
-    return res
-        .status(401)
-        .send({ error: "Could not find destination." });
-  }
-
-  await destination.delete();
 
   return res.status(200).send({ message: "Success" });
 };
@@ -330,17 +214,13 @@ exports.deleteUserAirport = async (req, res) => {
   const user = await User.findOne({ "tokens.token": token });
 
   if (!user) {
-    return res
-        .status(401)
-        .send({ error: "Could not find user." });
+    return res.status(401).send({ error: "Could not find user." });
   }
 
   const airport = await Airport.findOne({ id, userId: user.id });
 
   if (!airport) {
-    return res
-        .status(401)
-        .send({ error: "Could not find airport." });
+    return res.status(401).send({ error: "Could not find airport." });
   }
 
   await airport.delete();
@@ -357,13 +237,13 @@ exports.deleteUserAirport = async (req, res) => {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="FlightApi.html">FlightApi</a></li></ul><h3>Global</h3><ul><li><a href="global.html#authMiddleware">authMiddleware</a></li><li><a href="global.html#delete">delete</a></li><li><a href="global.html#deleteUserAirport">deleteUserAirport</a></li><li><a href="global.html#deleteUserDestination">deleteUserDestination</a></li><li><a href="global.html#deleteUserFlight">deleteUserFlight</a></li><li><a href="global.html#getAirports">getAirports</a></li><li><a href="global.html#getDestinations">getDestinations</a></li><li><a href="global.html#getFlight">getFlight</a></li><li><a href="global.html#getUserAirport">getUserAirport</a></li><li><a href="global.html#getUserAirports">getUserAirports</a></li><li><a href="global.html#getUserDestination">getUserDestination</a></li><li><a href="global.html#getUserDestinations">getUserDestinations</a></li><li><a href="global.html#getUserFlight">getUserFlight</a></li><li><a href="global.html#getUserFlights">getUserFlights</a></li><li><a href="global.html#logout">logout</a></li><li><a href="global.html#saveAirport">saveAirport</a></li><li><a href="global.html#saveDestination">saveDestination</a></li><li><a href="global.html#saveFlight">saveFlight</a></li><li><a href="global.html#show">show</a></li><li><a href="global.html#signIn">signIn</a></li><li><a href="global.html#signUp">signUp</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="FlightApi.html">FlightApi</a></li></ul><h3>Global</h3><ul><li><a href="global.html#authMiddleware">authMiddleware</a></li><li><a href="global.html#delete">delete</a></li><li><a href="global.html#deleteUserAirport">deleteUserAirport</a></li><li><a href="global.html#deleteUserFlight">deleteUserFlight</a></li><li><a href="global.html#getAirports">getAirports</a></li><li><a href="global.html#getDestinations">getDestinations</a></li><li><a href="global.html#getFlight">getFlight</a></li><li><a href="global.html#getUserAirport">getUserAirport</a></li><li><a href="global.html#getUserAirports">getUserAirports</a></li><li><a href="global.html#getUserFlight">getUserFlight</a></li><li><a href="global.html#getUserFlights">getUserFlights</a></li><li><a href="global.html#logout">logout</a></li><li><a href="global.html#saveAirport">saveAirport</a></li><li><a href="global.html#saveDestination">saveDestination</a></li><li><a href="global.html#saveFlight">saveFlight</a></li><li><a href="global.html#show">show</a></li><li><a href="global.html#signIn">signIn</a></li><li><a href="global.html#signUp">signUp</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sat Nov 16 2019 15:48:56 GMT+0100 (GMT+01:00)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sun Nov 17 2019 15:47:30 GMT+0100 (GMT+01:00)
 </footer>
 
 <script> prettyPrint(); </script>

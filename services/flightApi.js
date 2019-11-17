@@ -25,7 +25,7 @@ class FlightApi {
    * @param {Object} query - query structure (for more details see: https://rapidapi.com/skyscanner/api/skyscanner-flight-search)
    * @returns {Promise<*>}
    */
-  async req(endpoint, query = {}) {
+  async req(endpoint, query) {
     const { baseUrl, headers } = this;
     const url = baseUrl + endpoint;
 

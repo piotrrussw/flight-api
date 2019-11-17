@@ -6,8 +6,14 @@ const router = express.Router();
 
 router.get("/flights", auth, flightController.getFlights);
 
-router.get("/airports", flightController.getAirports);
+router.get("/airports", auth, flightController.getAirports);
 
-router.post("/flight/save", auth, flightController.saveFlight);
+router.post(
+  "/flight/save",
+  [auth, flightController.validate("saveFlight")],
+  flightController.saveFlight
+);
+
+router.post("/airport/save", auth, flightController.saveAirport);
 
 module.exports = router;
