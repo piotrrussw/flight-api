@@ -1,7 +1,7 @@
 {
   "name": "flight-app",
   "version": "1.0.0",
-  "description": "App that allow user to search for flight, airport, destination and save it to favorites",
+  "description": "App that allow user to search for flight, airport and save it to favorites",
   "main": "index.js",
   "engines": {
     "node": "10.*",

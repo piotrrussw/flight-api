@@ -1,5 +1,5 @@
 # Flight Api
-App that allow user to search for flight, airport, destination and save it to favorites.
+App that allow user to search for flight, airport and save it to favorites.
 Developed for my University Internet Engineering class.
 
 ## Repository 
