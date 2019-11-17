@@ -10,11 +10,10 @@ const keys = require("../config/keys");
  * @returns {Promise<*|void>}
  */
 module.exports = async (req, res, next) => {
-  const token = req.header("Authorization").replace("Bearer ", "");
-  const data = jwt.verify(token, keys.JWT_KEY);
+  const token = req.header("access_token");
 
   try {
-    const user = await User.findOne({ _id: data._id, "tokens.token": token });
+    const user = await User.findOne({ "tokens.token": token });
 
     if (!user) {
       return res
@@ -22,8 +21,9 @@ module.exports = async (req, res, next) => {
         .send({ error: "Not authorized to access this resource" });
     }
 
-    req.user = user;
-    req.token = token;
+    req.session = {};
+    req.session.user = user;
+    req.session.accessToken = token;
 
     next();
   } catch (error) {

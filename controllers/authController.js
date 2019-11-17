@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const { check } = require("express-validator");
 
 /**
  * @function signUp
@@ -13,6 +14,7 @@ exports.signUp = async (req, res) => {
     const token = await user.generateAuthToken();
     res.status(201).send({ user, token });
   } catch (error) {
+    console.error(error);
     res.status(400).send(error);
   }
 };
@@ -37,6 +39,7 @@ exports.signIn = async (req, res) => {
     const token = await user.generateAuthToken();
     res.send({ user, token });
   } catch (error) {
+    console.error(error);
     res.status(400).send(error);
   }
 };
@@ -49,15 +52,37 @@ exports.signIn = async (req, res) => {
  * @returns {Promise<*|void>}
  */
 exports.logout = async (req, res) => {
-    const { token } = req;
-    const user = await User.findOne({ "tokens.token": token });
+  const session = req.session;
+  const token = session ? session.accessToken : null;
+  const user = await User.findOne({ "tokens.token": token });
 
-    if (!user) {
-        return res
-            .status(401)
-            .send({ error: "Could not logout user." });
-    }
+  if (!user) {
+    return res.status(401).send({ error: "Could not logout user." });
+  }
 
-    user.logout(token);
-    res.status(200).send({ message: 'Success' });
+  await user.logout();
+
+  res.status(200).send({ message: "Success" });
+};
+
+exports.validate = method => {
+  switch (method) {
+    case "signUp":
+      return [
+        check("username", "username does not exists").exists(),
+        check("email", "email does not exists")
+          .isEmail()
+          .exists(),
+        check("password", "password does not exists").exists()
+      ];
+    case "signIn":
+      return [
+        check("email", "Given email is invalid")
+          .isEmail()
+          .exists(),
+        check("password", "Given password is invalid").exists()
+      ];
+    default:
+      return [];
+  }
 };

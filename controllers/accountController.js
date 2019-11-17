@@ -21,7 +21,7 @@ exports.delete = async (req, res) => {
         .send({ error: "Could not find user." });
   }
 
-  user.delete();
+  await user.delete();
 
   return res.status(200).send({ message: 'Success' });
 };

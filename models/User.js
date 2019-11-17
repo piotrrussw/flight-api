@@ -5,7 +5,7 @@ const keys = require("../config/keys");
 const { Schema, model } = require("mongoose");
 
 const userSchema = new Schema({
-  name: {
+  username: {
     type: String,
     required: true,
     trim: true
@@ -36,16 +36,15 @@ const userSchema = new Schema({
   ]
 });
 
-userSchema.pre("save", async next => {
+userSchema.pre("save", async function(next) {
   if (this.isModified("password")) {
     this.password = await bcrypt.hash(this.password, 8);
   }
   next();
 });
 
-userSchema.methods.generateAuthToken = async () => {
-  // Generate an auth token for the user
-  const token = jwt.sign({ _id: user._id }, keys.JWT_KEY);
+userSchema.methods.generateAuthToken = async function() {
+  const token = jwt.sign({ _id: this._id }, keys.JWT_KEY);
 
   this.tokens = this.tokens.concat({ token });
   await this.save();
@@ -53,23 +52,17 @@ userSchema.methods.generateAuthToken = async () => {
   return token;
 };
 
-userSchema.statics.logout = async token => {
-  const user = await User.findOne({ "tokens.token": token });
+userSchema.methods.logout = async function() {
+  this.tokens = [];
 
-  if (!user) {
-    throw new Error({ error: "Invalid login credentials" });
-  }
-
-  user.tokens = [];
-
-  await user.save();
+  await this.save();
 
   return true;
 };
 
-userSchema.statics.findByCredentials = async (email, password) => {
+userSchema.statics.findByCredentials = async function(email, password) {
   // Search for a user by email and password.
-  const user = await User.findOne({ email });
+  const user = await this.findOne({ email });
 
   if (!user) {
     throw new Error({ error: "Invalid login credentials" });
