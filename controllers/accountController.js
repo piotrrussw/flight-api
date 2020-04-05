@@ -1,6 +1,11 @@
 const User = require("../models/User");
 const Flight = require("../models/Flight");
 const Airport = require("../models/Airport");
+const Capital = require("../models/Capital");
+const Place = require("../models/Place");
+
+const FlightApi = require("../services/flightApi");
+const api = new FlightApi();
 
 /**
  * @function delete
@@ -10,17 +15,17 @@ const Airport = require("../models/Airport");
  * @returns {Promise<*|void>}
  */
 exports.delete = async (req, res) => {
-  const { session } = req;
-  const token = session ? session.accessToken : null;
-  const user = await User.findOne({ "tokens.token": token });
+    const { session } = req;
+    const token = session ? session.accessToken : null;
+    const user = await User.findOne({ "tokens.token": token });
 
-  if (!user) {
-    return res.status(401).send({ error: "Could not find user." });
-  }
+    if (!user) {
+        return res.status(401).send({ error: "Could not find user." });
+    }
 
-  await user.delete();
+    await user.delete();
 
-  return res.status(200).send({ message: "Success" });
+    return res.status(200).send({ message: "Success" });
 };
 
 /**
@@ -31,15 +36,15 @@ exports.delete = async (req, res) => {
  * @returns {Promise<*|void>}
  */
 exports.show = async (req, res) => {
-  const { session } = req;
-  const token = session ? session.accessToken : null;
-  const user = await User.findOne({ "tokens.token": token });
+    const { session } = req;
+    const token = session ? session.accessToken : null;
+    const user = await User.findOne({ "tokens.token": token });
 
-  if (!user) {
-    return res.status(401).send({ error: "Could not find user." });
-  }
+    if (!user) {
+        return res.status(401).send({ error: "Could not find user." });
+    }
 
-  return res.status(200).send({ user, message: "Success" });
+    return res.status(200).send({ user, message: "Success" });
 };
 
 /**
@@ -50,21 +55,23 @@ exports.show = async (req, res) => {
  * @returns {Promise<*|void>}
  */
 exports.getUserFlights = async (req, res) => {
-  const { session } = req;
-  const token = session ? session.accessToken : null;
-  const user = await User.findOne({ "tokens.token": token });
+    const { session } = req;
+    const token = session ? session.accessToken : null;
+    const user = await User.findOne({ "tokens.token": token });
 
-  if (!user) {
-    return res.status(401).send({ error: "Could not find user." });
-  }
+    if (!user) {
+        return res.status(404).send({ error: "Could not find user." });
+    }
 
-  const flights = await Flight.find({ userId: user.id });
+    Flight.find({ userId: user.id })
+        .lean()
+        .exec()
+        .then(data => {
+            const flights = data.map(item => ({ ...item, favorite: true }));
 
-  if (!flights) {
-    return res.status(401).send({ error: "Could not find flights." });
-  }
-
-  return res.status(200).send({ flights, message: "Success" });
+            return res.status(200).send({ flights });
+        })
+        .catch(() => res.status(404).send({ error: "Could not find flights." }));
 };
 
 /**
@@ -75,21 +82,23 @@ exports.getUserFlights = async (req, res) => {
  * @returns {Promise<*|void>}
  */
 exports.getUserAirports = async (req, res) => {
-  const { session } = req;
-  const token = session ? session.accessToken : null;
-  const user = await User.findOne({ "tokens.token": token });
+    const { session } = req;
+    const token = session ? session.accessToken : null;
+    const user = await User.findOne({ "tokens.token": token });
 
-  if (!user) {
-    return res.status(401).send({ error: "Could not find user." });
-  }
+    if (!user) {
+        return res.status(404).send({ error: "Could not find user." });
+    }
 
-  const airports = await Airport.find({ userId: user.id });
+    Airport.find({ userId: user.id })
+        .lean()
+        .exec()
+        .then(data => {
+            const airports = data.map(item => ({ ...item, favorite: true }));
 
-  if (!airports) {
-    return res.status(401).send({ error: "Could not find airports." });
-  }
-
-  return res.status(200).send({ airports, message: "Success" });
+            return res.status(200).send({ airports });
+        })
+        .catch(() => res.status(404).send({ error: "Could not find airports." }));
 };
 
 /**
@@ -100,22 +109,22 @@ exports.getUserAirports = async (req, res) => {
  * @returns {Promise<*|void>}
  */
 exports.getUserFlight = async (req, res) => {
-  const { session } = req;
-  const token = session ? session.accessToken : null;
-  const { id } = req.params;
-  const user = await User.findOne({ "tokens.token": token });
+    const { session } = req;
+    const token = session ? session.accessToken : null;
+    const { id } = req.params;
+    const user = await User.findOne({ "tokens.token": token });
 
-  if (!user) {
-    return res.status(401).send({ error: "Could not find user." });
-  }
+    if (!user) {
+        return res.status(404).send({ error: "Could not find user." });
+    }
 
-  const flight = await Flight.findOne({ _id: id, userId: user.id });
+    const flight = await Flight.findOne({ _id: id, userId: user.id });
 
-  if (!flight) {
-    return res.status(401).send({ error: "Could not find flight." });
-  }
+    if (!flight) {
+        return res.status(401).send({ error: "Could not find flight." });
+    }
 
-  return res.status(200).send({ flight, message: "Success" });
+    return res.status(200).send({ flight });
 };
 
 /**
@@ -126,22 +135,22 @@ exports.getUserFlight = async (req, res) => {
  * @returns {Promise<*|void>}
  */
 exports.getUserAirport = async (req, res) => {
-  const { session } = req;
-  const token = session ? session.accessToken : null;
-  const { id } = req.params;
-  const user = await User.findOne({ "tokens.token": token });
+    const { session } = req;
+    const token = session ? session.accessToken : null;
+    const { id } = req.params;
+    const user = await User.findOne({ "tokens.token": token });
 
-  if (!user) {
-    return res.status(401).send({ error: "Could not find user." });
-  }
+    if (!user) {
+        return res.status(401).send({ error: "Could not find user." });
+    }
 
-  const airport = await Airport.findOne({ _id: id, userId: user.id });
+    const airport = await Airport.findOne({ _id: id, userId: user.id });
 
-  if (!airport) {
-    return res.status(401).send({ error: "Could not find airport." });
-  }
+    if (!airport) {
+        return res.status(401).send({ error: "Could not find airport." });
+    }
 
-  return res.status(200).send({ airport, message: "Success" });
+    return res.status(200).send({ airport, message: "Success" });
 };
 
 /**
@@ -152,24 +161,24 @@ exports.getUserAirport = async (req, res) => {
  * @returns {Promise<*|void>}
  */
 exports.deleteUserFlight = async (req, res) => {
-  const { session } = req;
-  const token = session ? session.accessToken : null;
-  const { id } = req.params;
-  const user = await User.findOne({ "tokens.token": token });
+    const { session } = req;
+    const token = session ? session.accessToken : null;
+    const { id } = req.params;
+    const user = await User.findOne({ "tokens.token": token });
 
-  if (!user) {
-    return res.status(401).send({ error: "Could not find user." });
-  }
+    if (!user) {
+        return res.status(404).send({ error: "Could not find user." });
+    }
 
-  const flight = await Flight.findOne({ id, userId: user.id });
+    const flight = await Flight.findOne({ _id: id, userId: user.id });
 
-  if (!flight) {
-    return res.status(401).send({ error: "Could not find flight." });
-  }
+    if (!flight) {
+        return res.status(404).send({ error: "Could not find flight." });
+    }
 
-  await flight.delete();
+    await flight.delete();
 
-  return res.status(200).send({ message: "Success" });
+    return res.status(200).send();
 };
 
 /**
@@ -180,22 +189,68 @@ exports.deleteUserFlight = async (req, res) => {
  * @returns {Promise<*|void>}
  */
 exports.deleteUserAirport = async (req, res) => {
-  const { session } = req;
-  const token = session ? session.accessToken : null;
-  const { id } = req.params;
-  const user = await User.findOne({ "tokens.token": token });
+    const { session } = req;
+    const token = session ? session.accessToken : null;
+    const { id } = req.params;
+    const user = await User.findOne({ "tokens.token": token });
 
-  if (!user) {
-    return res.status(401).send({ error: "Could not find user." });
-  }
+    if (!user) {
+        return res.status(404).send({ error: "Could not find user." });
+    }
 
-  const airport = await Airport.findOne({ id, userId: user.id });
+    const airport = await Airport.findOne({ _id: id, userId: user.id });
 
-  if (!airport) {
-    return res.status(401).send({ error: "Could not find airport." });
-  }
+    if (!airport) {
+        return res.status(404).send({ error: "Could not find airport." });
+    }
 
-  await airport.delete();
+    await airport.delete();
 
-  return res.status(200).send({ message: "Success" });
+    return res.status(200).send();
+};
+
+exports.getCapitals = async (req, res) => {
+    const { session } = req;
+    const token = session ? session.accessToken : null;
+
+    if (!token) {
+        return res.status(405).send({ message: "User not logged in" });
+    }
+
+    const user = await User.findOne({ "tokens.token": token });
+
+    if (!user) {
+        return res.status(401).send({ error: "Could not logout user." });
+    }
+
+    const capitals = await Capital.find({}, null, { sort: { capital: 1 } });
+
+    if (!capitals) {
+        return res.status(404).send({ error: "Could not find capitals." });
+    }
+
+    return res.status(200).send({ capitals });
+};
+
+exports.getPlaces = async (req, res) => {
+    const session = req.session;
+    const token = session ? session.accessToken : null;
+
+    if (!token) {
+        return res.status(405).send({ message: "User not logged in" });
+    }
+
+    const user = await User.findOne({ "tokens.token": token });
+
+    if (!user) {
+        return res.status(401).send({ error: "Could not logout user." });
+    }
+
+    const places = await Place.find({}, null, { sort: { name: 1 } });
+
+    if (!places) {
+        return res.status(404).send({ error: "Could not find places." });
+    }
+
+    return res.status(200).send({ places });
 };

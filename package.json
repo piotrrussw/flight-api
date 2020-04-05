@@ -4,7 +4,7 @@
   "description": "App that allow user to search for flight, airport and save it to favorites",
   "main": "index.js",
   "engines": {
-    "node": "10.*",
+    "node": "12.*",
     "npm": "6.5.*"
   },
   "scripts": {
@@ -17,17 +17,24 @@
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-validator": "^6.2.0",
     "got": "^9.6.0",
     "jsonwebtoken": "^8.5.1",
+    "moment": "^2.24.0",
     "mongoose": "^5.7.5",
     "validator": "^12.0.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",
     "mocha": "^6.2.2",
-    "nodemon": "^1.19.4",
-    "prettier": "^1.18.2"
+    "nodemon": "^1.19.4"
+  },
+  "prettier": {
+    "printWidth": 100,
+    "tabWidth": 4,
+    "useTabs": false,
+    "singleQuote": false
   }
 }

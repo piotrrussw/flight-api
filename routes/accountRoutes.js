@@ -8,6 +8,10 @@ router.get("/account", auth, accountController.show);
 
 router.get("/account/delete", auth, accountController.delete);
 
+router.get("/capitals", auth, accountController.getCapitals);
+
+router.get("/places", auth, accountController.getPlaces);
+
 router.get("/user/flights", auth, accountController.getUserFlights);
 
 router.get("/user/airports", auth, accountController.getUserAirports);
