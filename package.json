@@ -1,43 +1,44 @@
 {
-  "name": "flight-app",
-  "version": "1.0.0",
-  "description": "App that allow user to search for flight, airport and save it to favorites",
-  "main": "index.js",
-  "engines": {
-    "node": "12.*",
-    "npm": "6.5.*"
-  },
-  "scripts": {
-    "test": "mocha",
-    "start": "node index.js",
-    "dev": "nodemon index.js",
-    "generate-doc": "jsdoc controllers middleware models routes services index.js -r README.md -d docs"
-  },
-  "author": "Piotr Wadycki <piotrwadycki@gmail.com>",
-  "license": "ISC",
-  "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "cloudinary": "^1.21.0",
-    "cookie-parser": "^1.4.5",
-    "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "express-validator": "^6.2.0",
-    "got": "^9.6.0",
-    "jsonwebtoken": "^8.5.1",
-    "moment": "^2.24.0",
-    "mongoose": "^5.7.5",
-    "multer": "^1.4.2",
-    "validator": "^12.0.0"
-  },
-  "devDependencies": {
-    "chai": "^4.2.0",
-    "mocha": "^6.2.2",
-    "nodemon": "^1.19.4"
-  },
-  "prettier": {
-    "printWidth": 100,
-    "tabWidth": 4,
-    "useTabs": false,
-    "singleQuote": false
-  }
+    "name": "flight-app",
+    "version": "1.0.0",
+    "description": "App that allow user to search for flight, airport and save it to favorites",
+    "main": "index.js",
+    "engines": {
+        "node": "12.*",
+        "npm": "6.5.*"
+    },
+    "scripts": {
+        "test": "mocha",
+        "start": "node index.js",
+        "dev": "nodemon index.js",
+        "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build",
+        "generate-doc": "jsdoc controllers middleware models routes services index.js -r README.md -d docs"
+    },
+    "author": "Piotr Wadycki <piotrwadycki@gmail.com>",
+    "license": "ISC",
+    "dependencies": {
+        "bcryptjs": "^2.4.3",
+        "cloudinary": "^1.21.0",
+        "cookie-parser": "^1.4.5",
+        "cors": "^2.8.5",
+        "express": "^4.17.1",
+        "express-validator": "^6.2.0",
+        "got": "^9.6.0",
+        "jsonwebtoken": "^8.5.1",
+        "moment": "^2.24.0",
+        "mongoose": "^5.7.5",
+        "multer": "^1.4.2",
+        "validator": "^12.0.0"
+    },
+    "devDependencies": {
+        "chai": "^4.2.0",
+        "mocha": "^6.2.2",
+        "nodemon": "^1.19.4"
+    },
+    "prettier": {
+        "printWidth": 100,
+        "tabWidth": 4,
+        "useTabs": false,
+        "singleQuote": false
+    }
 }

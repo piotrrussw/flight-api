@@ -9,7 +9,7 @@ const flightRoutes = require("./routes/flightRoutes");
 const { storage, fileFilter } = require("./utils/multerOptions");
 const multer = require("multer");
 const cookieParser = require("cookie-parser");
-const PORT = keys.PORT || 5000;
+const PORT = process.env.PORT || keys.PORT || 5000;
 
 const app = express();
 
@@ -20,7 +20,13 @@ app.use(multer({ storage, fileFilter }).single("image"));
 app.use(authRoutes);
 app.use(accountRoutes);
 app.use(flightRoutes);
+
+app.use(express.static(path.join(__dirname, "client/build")));
 app.use("/images", express.static(path.join(__dirname, "images")));
+
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../build"));
+});
 
 const db = mongoose.connect(keys.mongoURI, {
     useNewUrlParser: true,
