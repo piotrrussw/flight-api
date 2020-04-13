@@ -21,6 +21,16 @@ import api, { setAuthToken } from 'api';
 import SubmitButton from 'components/Common/SubmitButton';
 
 const useStyles = makeStyles({
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    width: '100%',
+  },
+  container: {
+    width: '100%',
+    maxWidth: '30rem',
+  },
   registerForm: {
     height: '100%',
     width: '100%',
@@ -164,7 +174,7 @@ function Register() {
 
         <Box pl={4} mt={1}>
           <Typography className={classes.header} component="h1">
-            Sign in
+            Sign up
           </Typography>
         </Box>
 

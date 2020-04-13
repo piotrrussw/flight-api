@@ -1,2 +1,8 @@
 @import '~normalize.css';
 @import "fonts";
+
+html, body, #root {
+  margin:0;
+  padding:0;
+  height:100%;
+}
