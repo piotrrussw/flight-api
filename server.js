@@ -9,6 +9,9 @@ const flightRoutes = require("./routes/flightRoutes");
 const { storage, fileFilter } = require("./utils/multerOptions");
 const multer = require("multer");
 const cookieParser = require("cookie-parser");
+
+require("dotenv").config();
+
 const PORT = process.env.PORT || keys.PORT || 5000;
 
 const app = express();

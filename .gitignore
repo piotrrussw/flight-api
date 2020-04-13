@@ -10,5 +10,8 @@ config/keys.js
 # images
 images
 
-# client
-client
+client/node_modules
+client/.idea
+client/.git
+client/build
+client/.gitignore
