@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const {app, db} = require('../index');
+const {app, db} = require('../server');
 const { PORT } = require('../config/keys');
 
 describe('Server', () => {

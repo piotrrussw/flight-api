@@ -2,17 +2,17 @@
     "name": "flight-app",
     "version": "1.0.0",
     "description": "App that allow user to search for flight, airport and save it to favorites",
-    "main": "index.js",
+    "main": "server.js",
     "engines": {
         "node": "12.*",
         "npm": "6.5.*"
     },
     "scripts": {
         "test": "mocha",
-        "start": "node index.js",
-        "dev": "nodemon index.js",
+        "start": "node server.js",
+        "dev": "nodemon server.js",
         "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build",
-        "generate-doc": "jsdoc controllers middleware models routes services index.js -r README.md -d docs"
+        "generate-doc": "jsdoc controllers middleware models routes services server.js -r README.md -d docs"
     },
     "author": "Piotr Wadycki <piotrwadycki@gmail.com>",
     "license": "ISC",
