@@ -28,7 +28,7 @@ app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "../build"));
 });
 
-const db = mongoose.connect(keys.mongoURI, {
+const db = mongoose.connect(process.env.mongoURI || keys.mongoURI, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true
