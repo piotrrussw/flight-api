@@ -8,7 +8,7 @@ import { Link as RouterLink } from 'react-router-dom';
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: 0,
-    height: '100vh',
+    height: '100%',
     width: '100vw',
   },
   mainSection: {

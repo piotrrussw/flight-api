@@ -7,6 +7,10 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
   emptyBox: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
     margin: '1rem 0',
     textAlign: 'center',
   },
@@ -18,6 +22,10 @@ const useStyles = makeStyles({
   },
   text: {
     margin: '1rem 0 2rem 0',
+    maxWidth: '30rem',
+  },
+  button: {
+    maxWidth: '30rem',
   },
 });
 
@@ -44,6 +52,7 @@ function EmptyResults({ type }) {
       <SentimentVeryDissatisfied className={classes.sadIcon} />
       <Typography className={classes.text}>{text[type]}</Typography>
       <Button
+        className={classes.button}
         variant="contained"
         color="primary"
         fullWidth

@@ -21,13 +21,16 @@ const useStyles = makeStyles({
     padding: '1rem 2rem',
     maxHeight: 'calc(100% - 134px)',
   },
+  homeBox: {
+    height: '100%',
+  },
 });
 
 function Layout({ children }) {
   const { state } = useAuthContext();
   const authenticated = state.token;
   const classes = useStyles();
-  const childrenClass = authenticated ? classes.contentBox : undefined;
+  const childrenClass = authenticated ? classes.contentBox : classes.homeBox;
 
   return (
     <Box className={classes.root}>
