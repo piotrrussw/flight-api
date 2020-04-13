@@ -4,28 +4,28 @@ const auth = require("../middleware/auth");
 
 const router = express.Router();
 
-router.get("/account", auth, accountController.show);
+router.get("/v1/account", auth, accountController.show);
 
-router.get("/account/delete", auth, accountController.delete);
+router.get("/v1/account/delete", auth, accountController.delete);
 
-router.get("/capitals", auth, accountController.getCapitals);
+router.get("/v1/capitals", auth, accountController.getCapitals);
 
-router.get("/places", auth, accountController.getPlaces);
+router.get("/v1/places", auth, accountController.getPlaces);
 
-router.get("/user/flights", auth, accountController.getUserFlights);
+router.get("/v1/user/flights", auth, accountController.getUserFlights);
 
-router.get("/user/airports", auth, accountController.getUserAirports);
+router.get("/v1/user/airports", auth, accountController.getUserAirports);
 
-router.get("/user/flight/:id", auth, accountController.getUserFlight);
+router.get("/v1/user/flight/:id", auth, accountController.getUserFlight);
 
-router.get("/user/airport/:id", auth, accountController.getUserAirport);
+router.get("/v1/user/airport/:id", auth, accountController.getUserAirport);
 
-router.delete("/user/flight/:id", auth, accountController.deleteUserFlight);
+router.delete("/v1/user/flight/:id", auth, accountController.deleteUserFlight);
 
-router.delete("/user/airport/:id", auth, accountController.deleteUserAirport);
+router.delete("/v1/user/airport/:id", auth, accountController.deleteUserAirport);
 
-router.post("/user/avatar", auth, accountController.uploadAvatar);
+router.post("/v1/user/avatar", auth, accountController.uploadAvatar);
 
-router.delete("/user/avatar", auth, accountController.deleteAvatar);
+router.delete("/v1/user/avatar", auth, accountController.deleteAvatar);
 
 module.exports = router;
