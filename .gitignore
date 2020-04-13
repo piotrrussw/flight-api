@@ -6,3 +6,9 @@ config/keys.js
 
 # idea
 .idea/*
+
+# images
+images
+
+# client
+client

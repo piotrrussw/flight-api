@@ -3,9 +3,7 @@ const Flight = require("../models/Flight");
 const Airport = require("../models/Airport");
 const Capital = require("../models/Capital");
 const Place = require("../models/Place");
-
-const FlightApi = require("../services/flightApi");
-const api = new FlightApi();
+const Avatar = require("../models/Avatar");
 
 /**
  * @function delete
@@ -44,7 +42,13 @@ exports.show = async (req, res) => {
         return res.status(401).send({ error: "Could not find user." });
     }
 
-    return res.status(200).send({ user, message: "Success" });
+    const userResponse = {
+        avatarUrl: await user.getAvatarUrl(),
+        username: user.username,
+        email: user.email
+    };
+
+    return res.status(200).send({ user: userResponse, message: "Success" });
 };
 
 /**
@@ -253,4 +257,68 @@ exports.getPlaces = async (req, res) => {
     }
 
     return res.status(200).send({ places });
+};
+
+exports.uploadAvatar = async (req, res) => {
+    const session = req.session;
+    const token = session ? session.accessToken : null;
+
+    if (!token) {
+        return res.status(405).send({ message: "User not logged in" });
+    }
+
+    const user = await User.findOne({ "tokens.token": token });
+
+    if (!user) {
+        return res.status(404).send({ error: "Could not logout user." });
+    }
+
+    const image = req.file;
+
+    if (!image) {
+        return res.status(404).send({ error: "Image not uploaded." });
+    }
+
+    const avatar = await Avatar.findOne({ userId: user.id });
+
+    if (avatar) {
+        avatar.path = image.path;
+        avatar.title = image.filename;
+    }
+
+    const model =
+        avatar || new Avatar({ userId: user.id, path: image.path, title: image.filename });
+
+    model.save((err, img) => {
+        if (err) {
+            return res.status(404).send({ error: "Could not save image." });
+        }
+
+        return res.status(200).send({ img });
+    });
+};
+
+exports.deleteAvatar = async (req, res) => {
+    const session = req.session;
+    const token = session ? session.accessToken : null;
+
+    if (!token) {
+        return res.status(405).send({ message: "User not logged in" });
+    }
+
+    const user = await User.findOne({ "tokens.token": token });
+
+    if (!user) {
+        return res.status(404).send({ error: "Could not logout user." });
+    }
+
+    const avatar = await Avatar.findOne({ userId: user.id });
+
+    if (!avatar) {
+        return res.status(404).send({ error: "Could not find avatar." });
+    }
+
+    await avatar.delete();
+
+    return res.status(200).send();
 };

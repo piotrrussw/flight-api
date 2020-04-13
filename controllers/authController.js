@@ -8,15 +8,24 @@ const { check } = require("express-validator");
  * @param {Object} res - response Object to return
  */
 exports.signUp = async (req, res) => {
-  try {
     const user = new User(req.body);
-    await user.save();
-    const token = await user.generateAuthToken();
-    res.status(201).send({ user, token });
-  } catch (error) {
-    console.error(error);
-    res.status(400).send(error);
-  }
+
+    user.save(async (err, user) => {
+        if (err) {
+            const message = err.message.split(":")[2];
+
+            return res.status(400).send({ message });
+        }
+
+        const token = await user.generateAuthToken();
+        const userResponse = {
+            avatarUrl: await user.getAvatarUrl(),
+            username: user.username,
+            email: user.email
+        };
+
+        return res.status(201).send({ user: userResponse, token });
+    });
 };
 
 /**
@@ -26,22 +35,31 @@ exports.signUp = async (req, res) => {
  * @param {Object} res - response Object to return
  */
 exports.signIn = async (req, res) => {
-  try {
     const { email, password } = req.body;
-    const user = await User.findByCredentials(email, password);
+    let user = null;
 
-    if (!user) {
-      return res
-        .status(401)
-        .send({ error: "Login failed! Check authentication credentials" });
+    try {
+        user = await User.findByCredentials(email, password);
+    } catch ({ message }) {
+        return res.status(401).send({ message });
     }
 
-    const token = await user.generateAuthToken();
-    res.send({ user, token });
-  } catch (error) {
-    console.error(error);
-    res.status(400).send(error);
-  }
+    if (!user) {
+        return res.status(401).send({ message: "Login failed! Check authentication credentials" });
+    }
+
+    try {
+        const token = await user.generateAuthToken();
+        const userResponse = {
+            avatarUrl: await user.getAvatarUrl(),
+            username: user.username,
+            email: user.email
+        };
+
+        return res.status(200).send({ user: userResponse, token });
+    } catch ({ message }) {
+        return res.status(401).send({ message });
+    }
 };
 
 /**
@@ -52,37 +70,37 @@ exports.signIn = async (req, res) => {
  * @returns {Promise<*|void>}
  */
 exports.logout = async (req, res) => {
-  const session = req.session;
-  const token = session ? session.accessToken : null;
-  const user = await User.findOne({ "tokens.token": token });
+    const session = req.session;
+    const token = session ? session.accessToken : null;
+    const user = await User.findOne({ "tokens.token": token });
 
-  if (!user) {
-    return res.status(401).send({ error: "Could not logout user." });
-  }
+    if (!user) {
+        return res.status(401).send({ error: "Could not logout user." });
+    }
 
-  await user.logout();
+    await user.logout();
 
-  res.status(200).send({ message: "Success" });
+    res.status(200).send({ message: "Success" });
 };
 
 exports.validate = method => {
-  switch (method) {
-    case "signUp":
-      return [
-        check("username", "username does not exists").exists(),
-        check("email", "email does not exists")
-          .isEmail()
-          .exists(),
-        check("password", "password does not exists").exists()
-      ];
-    case "signIn":
-      return [
-        check("email", "Given email is invalid")
-          .isEmail()
-          .exists(),
-        check("password", "Given password is invalid").exists()
-      ];
-    default:
-      return [];
-  }
+    switch (method) {
+        case "signUp":
+            return [
+                check("username", "username does not exists").exists(),
+                check("email", "email does not exists")
+                    .isEmail()
+                    .exists(),
+                check("password", "password does not exists").exists()
+            ];
+        case "signIn":
+            return [
+                check("email", "Given email is invalid")
+                    .isEmail()
+                    .exists(),
+                check("password", "Given password is invalid").exists()
+            ];
+        default:
+            return [];
+    }
 };

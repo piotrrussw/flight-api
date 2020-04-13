@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const keys = require("../config/keys");
 const { Schema, model } = require("mongoose");
+const Avatar = require("./Avatar");
 
 const userSchema = new Schema({
     username: {
@@ -17,7 +18,7 @@ const userSchema = new Schema({
         lowercase: true,
         validate: value => {
             if (!validator.isEmail(value)) {
-                throw new Error({ error: "Invalid Email address" });
+                throw new Error("Email is invalid or has been arleady used");
             }
         }
     },
@@ -60,18 +61,23 @@ userSchema.methods.logout = async function() {
     return true;
 };
 
+userSchema.methods.getAvatarUrl = async function() {
+    const avatar = await Avatar.findOne({ userId: this.id });
+
+    return avatar ? avatar.path : null;
+};
+
 userSchema.statics.findByCredentials = async function(email, password) {
-    // Search for a user by email and password.
     const user = await this.findOne({ email });
 
     if (!user) {
-        throw new Error({ error: "Invalid login credentials" });
+        throw new Error("Invalid login credentials");
     }
 
     const isPasswordMatch = await bcrypt.compare(password, user.password);
 
     if (!isPasswordMatch) {
-        throw new Error({ error: "Invalid login credentials" });
+        throw new Error("Invalid login credentials");
     }
 
     return user;

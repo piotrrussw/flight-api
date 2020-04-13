@@ -24,4 +24,8 @@ router.delete("/user/flight/:id", auth, accountController.deleteUserFlight);
 
 router.delete("/user/airport/:id", auth, accountController.deleteUserAirport);
 
+router.post("/user/avatar", auth, accountController.uploadAvatar);
+
+router.delete("/user/avatar", auth, accountController.deleteAvatar);
+
 module.exports = router;
