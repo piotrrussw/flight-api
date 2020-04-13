@@ -7,9 +7,6 @@ config/keys.js
 # idea
 .idea/*
 
-# images
-images
-
 client/node_modules
 client/.idea
 client/.git
