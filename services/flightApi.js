@@ -1,5 +1,4 @@
 const got = require("got");
-const { api } = require("../config/keys");
 
 /**
  * @class FlightApi - class handling request from external Skyscanner API
@@ -11,10 +10,10 @@ class FlightApi {
      * @constructor
      */
     constructor() {
-        this.baseUrl = process.env.apiUrl || api.url;
+        this.baseUrl = process.env.apiUrl;
         this.headers = {
-            "x-rapidapi-host": process.env.apiHost || api.host,
-            "x-rapidapi-key": process.env.apiKey || api.key,
+            "x-rapidapi-host": process.env.apiHost,
+            "x-rapidapi-key": process.env.apiKey,
             "content-type": "application/x-www-form-urlencoded"
         };
     }
