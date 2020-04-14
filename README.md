@@ -6,10 +6,6 @@ Developed for my University Internet Engineering class.
 
 [REPO](https://github.com/piotrrussw/flight-api)
 
-## Documentation
-
-[DOCS](https://piotrrussw.github.io/flight-api/).
-
 ## Run
 
 ```
